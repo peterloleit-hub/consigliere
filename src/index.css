@@ -1,39 +1,42 @@
 @import "tailwindcss";
 
-/* Command Center Theme - Material Design 3 Compliant */
+/* Command Center Theme - Marine Light Mode */
 @theme {
-  /* Primary palette - Modern blue */
-  --color-primary-50: oklch(0.97 0.02 250);
-  --color-primary-100: oklch(0.93 0.04 250);
-  --color-primary-200: oklch(0.86 0.08 250);
-  --color-primary-300: oklch(0.76 0.12 250);
-  --color-primary-400: oklch(0.64 0.16 250);
-  --color-primary-500: oklch(0.55 0.18 250);
-  --color-primary-600: oklch(0.48 0.18 250);
-  --color-primary-700: oklch(0.42 0.16 250);
-  --color-primary-800: oklch(0.36 0.14 250);
-  --color-primary-900: oklch(0.30 0.12 250);
+  /* Marine primary palette - Teal */
+  --color-primary-50: oklch(0.97 0.03 200);
+  --color-primary-100: oklch(0.92 0.06 200);
+  --color-primary-200: oklch(0.85 0.10 200);
+  --color-primary-300: oklch(0.75 0.14 200);
+  --color-primary-400: oklch(0.60 0.16 200);
+  --color-primary-500: oklch(0.48 0.14 200);
+  --color-primary-600: oklch(0.40 0.12 200);
+  --color-primary-700: oklch(0.33 0.10 200);
+  --color-primary-800: oklch(0.28 0.08 200);
+  --color-primary-900: oklch(0.22 0.06 200);
 
-  /* Surface colors */
-  --color-surface: oklch(0.99 0.005 250);
-  --color-surface-dim: oklch(0.96 0.01 250);
-  --color-surface-container: oklch(0.97 0.008 250);
-  --color-surface-container-high: oklch(0.95 0.01 250);
-  --color-surface-container-highest: oklch(0.92 0.012 250);
+  /* Accent for selection highlight */
+  --color-accent: oklch(0.55 0.16 200);
 
-  /* Status colors — WCAG AA compliant for text on white */
+  /* Surface colors - light with subtle teal tint */
+  --color-surface: oklch(0.99 0.005 200);
+  --color-surface-dim: oklch(0.96 0.01 200);
+  --color-surface-container: oklch(0.97 0.008 200);
+  --color-surface-container-high: oklch(0.95 0.01 200);
+  --color-surface-container-highest: oklch(0.92 0.012 200);
+
+  /* Status colors */
   --color-success: oklch(0.55 0.16 145);
   --color-warning: oklch(0.55 0.14 85);
   --color-error: oklch(0.50 0.20 25);
 
-  /* Status container colors (for chip backgrounds) */
+  /* Status container colors */
   --color-success-container: oklch(0.90 0.08 145);
   --color-warning-container: oklch(0.90 0.08 85);
   --color-error-container: oklch(0.90 0.10 25);
 
   /* Text colors */
-  --color-on-surface: oklch(0.20 0.02 250);
-  --color-on-surface-variant: oklch(0.40 0.03 250);
+  --color-on-surface: oklch(0.20 0.02 200);
+  --color-on-surface-variant: oklch(0.40 0.03 200);
 
   /* Spacing */
   --spacing-page: 1rem;
@@ -44,7 +47,7 @@
   --radius-lg: 0.75rem;
   --radius-xl: 1rem;
 
-  /* MD3 Elevation System - 6 Levels */
+  /* MD3 Elevation System */
   --elevation-0: none;
   --elevation-1: 0 1px 2px 0 rgb(0 0 0 / 0.05), 0 1px 3px 0 rgb(0 0 0 / 0.05);
   --elevation-2: 0 1px 2px 0 rgb(0 0 0 / 0.06), 0 2px 6px 0 rgb(0 0 0 / 0.1);
@@ -65,6 +68,7 @@
 
   /* Font */
   --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
+  --font-mono: 'JetBrains Mono', 'Fira Code', monospace;
 }
 
 /* Base styles */
@@ -80,7 +84,7 @@ body {
   min-height: 100dvh;
 }
 
-/* Focus ring utility - MD3 style */
+/* Focus ring utility */
 .focus-ring {
   @apply focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[--color-primary-500] focus-visible:ring-offset-2 focus-visible:ring-offset-[--color-surface];
 }
@@ -108,4 +112,9 @@ body {
   clip: rect(0, 0, 0, 0);
   white-space: nowrap;
   border-width: 0;
+}
+
+/* Flight-tracker style selected border */
+.selected-card {
+  border-left: 3px solid var(--color-accent);
 }

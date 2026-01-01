@@ -9,6 +9,7 @@ const businessIntel: AgentDefinition = {
     icon: BarChart3,
     category: 'business',
     webhookEnvKey: 'VITE_N8N_BUSINESS_INTEL_URL',
+    route: { source: 'KPIs', destination: 'Alerts' },
     configFields: [
         {
             key: 'briefing_time',
@@ -55,6 +56,7 @@ const careerScout: AgentDefinition = {
     icon: Briefcase,
     category: 'career',
     webhookEnvKey: 'VITE_N8N_CAREER_SCOUT_URL',
+    route: { source: 'Jobs', destination: 'Matches' },
     configFields: [
         {
             key: 'regions_include',
@@ -128,6 +130,7 @@ const linkedinResearcher: AgentDefinition = {
     icon: Linkedin,
     category: 'career',
     webhookEnvKey: 'VITE_N8N_LINKEDIN_RESEARCHER_URL',
+    route: { source: 'Sources', destination: 'Summaries' },
     configFields: [
         {
             key: 'topics',

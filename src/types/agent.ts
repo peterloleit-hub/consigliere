@@ -36,6 +36,11 @@ export interface AgentDefinition {
     category: AgentCategory
     webhookEnvKey: string
     configFields: ConfigField[]
+    /** Flight-tracker style source → destination display */
+    route: {
+        source: string
+        destination: string
+    }
 }
 
 /** Agent status from logs */
