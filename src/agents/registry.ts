@@ -4,7 +4,7 @@ import type { AgentDefinition } from '@/types/agent'
 /** Business Intelligence Agent - Thai Tone Trainer metrics */
 const businessIntel: AgentDefinition = {
     id: 'business-intel',
-    name: 'Business Monitor',
+    name: 'Business Intelligence',
     description: 'Daily briefings, anomaly detection, and budget tracking for Thai Tone Trainer',
     icon: BarChart3,
     category: 'business',
@@ -51,7 +51,7 @@ const businessIntel: AgentDefinition = {
 /** Career Portfolio Scout - EMEA job hunting */
 const careerScout: AgentDefinition = {
     id: 'career-scout',
-    name: 'Career Portfolio Scout',
+    name: 'Job Seeker',
     description: 'EMEA-focused job monitoring with geographic and timezone guardrails',
     icon: Briefcase,
     category: 'career',
@@ -125,7 +125,7 @@ const careerScout: AgentDefinition = {
 /** LinkedIn Researcher - Thought leadership */
 const linkedinResearcher: AgentDefinition = {
     id: 'linkedin-researcher',
-    name: 'LinkedIn Researcher',
+    name: 'Content Creator',
     description: 'AI topic tracking and multi-persona content generation',
     icon: Linkedin,
     category: 'career',
