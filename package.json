@@ -8,7 +8,12 @@
         "build": "tsc -b && vite build",
         "lint": "eslint .",
         "preview": "vite preview",
-        "type-check": "tsc --noEmit"
+        "type-check": "tsc --noEmit",
+        "db:start": "supabase start",
+        "db:stop": "supabase stop",
+        "db:reset": "supabase db reset",
+        "db:migrate": "supabase db push",
+        "db:studio": "supabase studio"
     },
     "dependencies": {
         "@supabase/supabase-js": "^2.47.0",
@@ -34,6 +39,7 @@
         "eslint-plugin-react-hooks": "^5.1.0",
         "eslint-plugin-react-refresh": "^0.4.16",
         "globals": "^15.14.0",
+        "supabase": "^2.70.5",
         "tailwindcss": "^4.0.0",
         "typescript": "~5.7.2",
         "typescript-eslint": "^8.18.2",
