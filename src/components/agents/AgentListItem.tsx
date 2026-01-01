@@ -11,10 +11,10 @@ interface AgentListItemProps {
 }
 
 // Mock stats per agent - in production these would come from the API
-const MOCK_AGENT_STATS: Record<string, { newItems: number; errors: number }> = {
-    'business-intel': { newItems: 3, errors: 0 },
-    'career-scout': { newItems: 12, errors: 2 },
-    'linkedin-researcher': { newItems: 0, errors: 0 },
+const MOCK_AGENT_STATS: Record<string, { newItems: number; errors: number; progress: number }> = {
+    'business-intel': { newItems: 3, errors: 0, progress: 0 },
+    'career-scout': { newItems: 12, errors: 2, progress: 45 },
+    'linkedin-researcher': { newItems: 0, errors: 0, progress: 0 },
 }
 
 // Traffic light status colors
@@ -24,6 +24,7 @@ function getStatusDisplay(status: AgentStatus | undefined, isLoading: boolean) {
             label: 'Loading',
             dotColor: 'bg-[--color-surface-container-highest]',
             textColor: 'text-[--color-on-surface-variant]',
+            bgColor: 'bg-[--color-surface-container-highest]',
             icon: Clock
         }
     }
@@ -33,6 +34,7 @@ function getStatusDisplay(status: AgentStatus | undefined, isLoading: boolean) {
                 label: 'Active',
                 dotColor: 'bg-[--color-success]',
                 textColor: 'text-[--color-success]',
+                bgColor: 'bg-[--color-success-container]/30',
                 icon: CheckCircle2
             }
         case 'error':
@@ -40,6 +42,7 @@ function getStatusDisplay(status: AgentStatus | undefined, isLoading: boolean) {
                 label: 'Error',
                 dotColor: 'bg-[--color-error]',
                 textColor: 'text-[--color-error]',
+                bgColor: 'bg-[--color-error-container]/30',
                 icon: AlertTriangle
             }
         case 'pending':
@@ -47,6 +50,7 @@ function getStatusDisplay(status: AgentStatus | undefined, isLoading: boolean) {
                 label: 'Running',
                 dotColor: 'bg-[--color-warning]',
                 textColor: 'text-[--color-warning]',
+                bgColor: 'bg-[--color-warning-container]/30',
                 icon: Loader2
             }
         default:
@@ -54,6 +58,7 @@ function getStatusDisplay(status: AgentStatus | undefined, isLoading: boolean) {
                 label: 'Idle',
                 dotColor: 'bg-[--color-surface-container-highest]',
                 textColor: 'text-[--color-on-surface-variant]',
+                bgColor: 'bg-[--color-surface-container-highest]',
                 icon: Clock
             }
     }
@@ -65,7 +70,10 @@ export function AgentListItem({ agent, isSelected, onSelect }: AgentListItemProp
     const status = latestLog?.status as AgentStatus | undefined
     const statusDisplay = getStatusDisplay(status, isLoading)
     const AgentIcon = agent.icon
-    const stats = MOCK_AGENT_STATS[agent.id] || { newItems: 0, errors: 0 }
+    const stats = MOCK_AGENT_STATS[agent.id] || { newItems: 0, errors: 0, progress: 0 }
+
+    // For demo: Show progress if status is pending OR if there's progress value (simulating active work)
+    const showProgress = status === 'pending' || stats.progress > 0
 
     return (
         <button
@@ -85,60 +93,73 @@ export function AgentListItem({ agent, isSelected, onSelect }: AgentListItemProp
                 'transition-all duration-200'
             )}
         >
-            {/* Header Row: Status dot + Title + Icon */}
-            <div className="flex items-center gap-3">
-                {/* Traffic light status dot */}
-                <div className={cn('h-3 w-3 rounded-full flex-shrink-0', statusDisplay.dotColor)} />
-
-                {/* Agent icon */}
-                <div className="p-2 rounded-lg bg-[--color-primary-100] flex-shrink-0">
-                    <AgentIcon className="h-5 w-5 text-[--color-primary-600]" aria-hidden="true" />
+            <div className="flex items-start gap-3.5">
+                {/* Large Icon */}
+                <div className="p-2.5 rounded-xl bg-[--color-primary-100] flex-shrink-0 mt-0.5">
+                    <AgentIcon className="h-6 w-6 text-[--color-primary-600]" aria-hidden="true" />
                 </div>
 
-                {/* Title + Status label */}
                 <div className="flex-1 min-w-0">
-                    <h3 className="font-semibold text-base text-[--color-on-surface] truncate">
-                        {agent.name}
-                    </h3>
-                    <div className="flex items-center gap-2 mt-0.5">
-                        <span className={cn('text-xs font-medium', statusDisplay.textColor)}>
+                    {/* Header: Title + Status Pill */}
+                    <div className="flex items-center justify-between mb-2">
+                        <h3 className="font-bold text-base text-[--color-on-surface] truncate pr-2">
+                            {agent.name}
+                        </h3>
+                        <span className={cn(
+                            'inline-flex items-center gap-1.5 px-2 py-1 rounded-md text-xs font-semibold flex-shrink-0',
+                            statusDisplay.bgColor,
+                            statusDisplay.textColor
+                        )}>
+                            <div className={cn('h-1.5 w-1.5 rounded-full', statusDisplay.dotColor)} />
                             {statusDisplay.label}
                         </span>
-                        {latestLog?.created_at && (
-                            <>
-                                <span className="text-[--color-on-surface-variant]">·</span>
-                                <time
-                                    dateTime={latestLog.created_at}
-                                    className="text-xs text-[--color-on-surface-variant]"
-                                >
-                                    {formatRelativeTime(latestLog.created_at)}
-                                </time>
-                            </>
-                        )}
                     </div>
-                </div>
-            </div>
 
-            {/* Stats Row: New Items, Errors */}
-            <div className="flex items-center gap-4 mt-3 pt-3 border-t border-[--color-surface-container-highest]">
-                {/* New additions - green */}
-                <div className={cn(
-                    'flex items-center gap-1.5',
-                    stats.newItems > 0 ? 'text-green-600' : 'text-[--color-on-surface-variant]'
-                )}>
-                    <Plus className="h-4 w-4" aria-hidden="true" />
-                    <span className="text-sm font-medium">{stats.newItems}</span>
-                    <span className="text-xs">new</span>
-                </div>
+                    {/* Progress Bar (if active) */}
+                    {showProgress && (
+                        <div className="mb-2.5">
+                            <div className="flex items-center justify-between text-[10px] font-medium text-[--color-on-surface-variant] mb-1">
+                                <span>Processing...</span>
+                                <span>{stats.progress}%</span>
+                            </div>
+                            <div className="h-1.5 w-full bg-[--color-surface-container-highest] rounded-full overflow-hidden">
+                                <div
+                                    className="h-full bg-[--color-primary-500] transition-all duration-500 ease-out"
+                                    style={{ width: `${stats.progress}%` }}
+                                />
+                            </div>
+                        </div>
+                    )}
 
-                {/* Errors - red */}
-                <div className={cn(
-                    'flex items-center gap-1.5',
-                    stats.errors > 0 ? 'text-red-600' : 'text-[--color-on-surface-variant]'
-                )}>
-                    <AlertTriangle className="h-4 w-4" aria-hidden="true" />
-                    <span className="text-sm font-medium">{stats.errors}</span>
-                    <span className="text-xs">errors</span>
+                    {/* Time & Stats Row */}
+                    <div className="flex items-center justify-between mt-1">
+                        {/* Time */}
+                        {latestLog?.created_at ? (
+                            <time
+                                dateTime={latestLog.created_at}
+                                className="flex items-center gap-1 text-xs text-[--color-on-surface-variant]"
+                            >
+                                <Clock className="h-3 w-3" />
+                                {formatRelativeTime(latestLog.created_at)}
+                            </time>
+                        ) : (
+                            <span className="text-xs text-[--color-on-surface-variant]">-</span>
+                        )}
+
+                        {/* Stats badges */}
+                        <div className="flex items-center gap-3">
+                            {stats.newItems > 0 && (
+                                <span className="flex items-center gap-1 text-xs font-medium text-[--color-success]">
+                                    <Plus className="h-3 w-3" /> {stats.newItems}
+                                </span>
+                            )}
+                            {stats.errors > 0 && (
+                                <span className="flex items-center gap-1 text-xs font-medium text-[--color-error]">
+                                    <AlertTriangle className="h-3 w-3" /> {stats.errors}
+                                </span>
+                            )}
+                        </div>
+                    </div>
                 </div>
             </div>
         </button>
