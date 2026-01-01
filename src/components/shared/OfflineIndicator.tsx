@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { WifiOff, Wifi } from 'lucide-react'
+import { Wifi, WifiOff } from 'lucide-react'
 import { cn } from '@/lib/utils'
 
 export function OfflineIndicator() {
@@ -18,25 +18,24 @@ export function OfflineIndicator() {
         }
     }, [])
 
-    if (isOnline) {
-        return (
-            <div className="flex items-center gap-1.5 text-xs text-[--color-success]">
-                <Wifi className="h-3.5 w-3.5" />
-                <span className="hidden sm:inline">Online</span>
-            </div>
-        )
-    }
-
+    // Status Pill: Static Green for Active, Amber for issues
     return (
         <div
             className={cn(
-                'flex items-center gap-1.5 px-2 py-1 rounded-full text-xs font-medium',
-                'bg-[--color-error]/10 text-[--color-error]',
-                'animate-pulse'
+                "flex items-center gap-2 px-3 py-1 rounded-full border transition-all duration-300 shadow-sm backdrop-blur-md",
+                isOnline
+                    ? "bg-emerald-500/90 border-emerald-300 text-white shadow-[0_0_10px_rgba(16,185,129,0.4)]"
+                    : "bg-amber-500/90 border-amber-300 text-white shadow-[0_0_10px_rgba(245,158,11,0.4)]"
             )}
         >
-            <WifiOff className="h-3.5 w-3.5" />
-            <span>Offline</span>
+            {isOnline ? (
+                <Wifi className="h-3.5 w-3.5" strokeWidth={3} />
+            ) : (
+                <WifiOff className="h-3.5 w-3.5" />
+            )}
+            <span className="text-[0.65rem] font-bold uppercase tracking-widest">
+                {isOnline ? 'WiFi On' : 'Offline'}
+            </span>
         </div>
     )
 }

@@ -23,7 +23,7 @@ export function Layout() {
             <nav
                 className={cn(
                     'fixed bottom-0 left-0 right-0 z-50',
-                    'bg-[var(--color-surface)]/90 backdrop-blur-md',
+                    'bg-[var(--color-surface)]/70 backdrop-blur-md',
                     'border-t-2 border-[var(--color-primary-600)]',
                     'shadow-[0_-4px_20px_rgba(0,0,0,0.3)]',
                     'nav-bottom py-3'

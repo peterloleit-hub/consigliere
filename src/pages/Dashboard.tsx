@@ -29,7 +29,7 @@ export default function Dashboard() {
     }, [handleKeyDown])
 
     return (
-        <div className="h-[calc(100vh-8rem)] flex flex-col md:flex-row gap-4 p-4">
+        <div className="h-[calc(100vh-10rem)] flex flex-col md:flex-row gap-4 p-4">
             {/* Left Panel: Agent List */}
             <aside
                 className={cn(
