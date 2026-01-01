@@ -1,4 +1,4 @@
-import { ArrowRight, AlertTriangle, Plus, CheckCircle2, Clock, Loader2, Zap } from 'lucide-react'
+import { AlertTriangle, Plus, CheckCircle2, Clock, Loader2 } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { formatRelativeTime } from '@/lib/utils'
 import { useLatestAgentLog } from '@/hooks'
@@ -11,25 +11,51 @@ interface AgentListItemProps {
 }
 
 // Mock stats per agent - in production these would come from the API
-const MOCK_AGENT_STATS: Record<string, { newItems: number; errors: number; lastRunSuccess: boolean }> = {
-    'business-intel': { newItems: 3, errors: 0, lastRunSuccess: true },
-    'career-scout': { newItems: 12, errors: 2, lastRunSuccess: true },
-    'linkedin-researcher': { newItems: 0, errors: 0, lastRunSuccess: true },
+const MOCK_AGENT_STATS: Record<string, { newItems: number; errors: number }> = {
+    'business-intel': { newItems: 3, errors: 0 },
+    'career-scout': { newItems: 12, errors: 2 },
+    'linkedin-researcher': { newItems: 0, errors: 0 },
 }
 
+// Traffic light status colors
 function getStatusDisplay(status: AgentStatus | undefined, isLoading: boolean) {
     if (isLoading) {
-        return { label: 'Loading', color: 'text-[--color-on-surface-variant]', bgColor: 'bg-[--color-surface-container-highest]', icon: Clock }
+        return {
+            label: 'Loading',
+            dotColor: 'bg-[--color-surface-container-highest]',
+            textColor: 'text-[--color-on-surface-variant]',
+            icon: Clock
+        }
     }
     switch (status) {
         case 'success':
-            return { label: 'Active', color: 'text-[--color-success]', bgColor: 'bg-[--color-success-container]', icon: CheckCircle2 }
+            return {
+                label: 'Active',
+                dotColor: 'bg-[--color-success]',
+                textColor: 'text-[--color-success]',
+                icon: CheckCircle2
+            }
         case 'error':
-            return { label: 'Error', color: 'text-[--color-error]', bgColor: 'bg-[--color-error-container]', icon: AlertTriangle }
+            return {
+                label: 'Error',
+                dotColor: 'bg-[--color-error]',
+                textColor: 'text-[--color-error]',
+                icon: AlertTriangle
+            }
         case 'pending':
-            return { label: 'Running', color: 'text-[--color-warning]', bgColor: 'bg-[--color-warning-container]', icon: Loader2 }
+            return {
+                label: 'Running',
+                dotColor: 'bg-[--color-warning]',
+                textColor: 'text-[--color-warning]',
+                icon: Loader2
+            }
         default:
-            return { label: 'Idle', color: 'text-[--color-on-surface-variant]', bgColor: 'bg-[--color-surface-container-high]', icon: Clock }
+            return {
+                label: 'Idle',
+                dotColor: 'bg-[--color-surface-container-highest]',
+                textColor: 'text-[--color-on-surface-variant]',
+                icon: Clock
+            }
     }
 }
 
@@ -38,16 +64,15 @@ export function AgentListItem({ agent, isSelected, onSelect }: AgentListItemProp
 
     const status = latestLog?.status as AgentStatus | undefined
     const statusDisplay = getStatusDisplay(status, isLoading)
-    const StatusIcon = statusDisplay.icon
     const AgentIcon = agent.icon
-    const stats = MOCK_AGENT_STATS[agent.id] || { newItems: 0, errors: 0, lastRunSuccess: true }
+    const stats = MOCK_AGENT_STATS[agent.id] || { newItems: 0, errors: 0 }
 
     return (
         <button
             onClick={onSelect}
             aria-pressed={isSelected}
             className={cn(
-                /* Card with complete border */
+                /* Wider card */
                 'w-full text-left p-4 rounded-xl',
                 'bg-[--color-surface-container]',
                 'border-2',
@@ -60,73 +85,61 @@ export function AgentListItem({ agent, isSelected, onSelect }: AgentListItemProp
                 'transition-all duration-200'
             )}
         >
-            {/* Header: Icon + Title */}
-            <div className="flex items-center gap-3 mb-3">
-                <div className="p-2 rounded-lg bg-[--color-primary-100]">
+            {/* Header Row: Status dot + Title + Icon */}
+            <div className="flex items-center gap-3">
+                {/* Traffic light status dot */}
+                <div className={cn('h-3 w-3 rounded-full flex-shrink-0', statusDisplay.dotColor)} />
+
+                {/* Agent icon */}
+                <div className="p-2 rounded-lg bg-[--color-primary-100] flex-shrink-0">
                     <AgentIcon className="h-5 w-5 text-[--color-primary-600]" aria-hidden="true" />
                 </div>
-                <h3 className="font-semibold text-base text-[--color-on-surface]">
-                    {agent.name}
-                </h3>
-            </div>
 
-            {/* Status Badge Row */}
-            <div className="flex items-center gap-2 mb-3">
-                <span className={cn(
-                    'inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium',
-                    statusDisplay.bgColor,
-                    statusDisplay.color
-                )}>
-                    <StatusIcon className={cn('h-3 w-3', status === 'pending' && 'animate-spin')} aria-hidden="true" />
-                    {statusDisplay.label}
-                </span>
-
-                {latestLog?.created_at && (
-                    <time
-                        dateTime={latestLog.created_at}
-                        className="text-xs text-[--color-on-surface-variant]"
-                    >
-                        {formatRelativeTime(latestLog.created_at)}
-                    </time>
-                )}
-            </div>
-
-            {/* Route: Source → Destination */}
-            <div className="flex items-center gap-2 mb-3 py-2 px-3 rounded-lg bg-[--color-surface]">
-                <span className="font-mono text-sm font-semibold text-[--color-on-surface] tracking-tight">
-                    {agent.route.source}
-                </span>
-                <ArrowRight className="h-3.5 w-3.5 text-[--color-on-surface-variant]" aria-hidden="true" />
-                <span className="font-mono text-sm font-semibold text-[--color-on-surface] tracking-tight">
-                    {agent.route.destination}
-                </span>
+                {/* Title + Status label */}
+                <div className="flex-1 min-w-0">
+                    <h3 className="font-semibold text-base text-[--color-on-surface] truncate">
+                        {agent.name}
+                    </h3>
+                    <div className="flex items-center gap-2 mt-0.5">
+                        <span className={cn('text-xs font-medium', statusDisplay.textColor)}>
+                            {statusDisplay.label}
+                        </span>
+                        {latestLog?.created_at && (
+                            <>
+                                <span className="text-[--color-on-surface-variant]">·</span>
+                                <time
+                                    dateTime={latestLog.created_at}
+                                    className="text-xs text-[--color-on-surface-variant]"
+                                >
+                                    {formatRelativeTime(latestLog.created_at)}
+                                </time>
+                            </>
+                        )}
+                    </div>
+                </div>
             </div>
 
             {/* Stats Row: New Items, Errors */}
-            <div className="flex items-center gap-3 pt-2 border-t border-[--color-surface-container-highest]">
-                {/* New additions */}
-                {stats.newItems > 0 && (
-                    <div className="flex items-center gap-1 text-[--color-success]">
-                        <Plus className="h-3.5 w-3.5" aria-hidden="true" />
-                        <span className="text-xs font-medium">{stats.newItems} new</span>
-                    </div>
-                )}
+            <div className="flex items-center gap-4 mt-3 pt-3 border-t border-[--color-surface-container-highest]">
+                {/* New additions - green */}
+                <div className={cn(
+                    'flex items-center gap-1.5',
+                    stats.newItems > 0 ? 'text-green-600' : 'text-[--color-on-surface-variant]'
+                )}>
+                    <Plus className="h-4 w-4" aria-hidden="true" />
+                    <span className="text-sm font-medium">{stats.newItems}</span>
+                    <span className="text-xs">new</span>
+                </div>
 
-                {/* Errors */}
-                {stats.errors > 0 && (
-                    <div className="flex items-center gap-1 text-[--color-error]">
-                        <AlertTriangle className="h-3.5 w-3.5" aria-hidden="true" />
-                        <span className="text-xs font-medium">{stats.errors} errors</span>
-                    </div>
-                )}
-
-                {/* Show "All good" if no new items and no errors */}
-                {stats.newItems === 0 && stats.errors === 0 && (
-                    <div className="flex items-center gap-1 text-[--color-on-surface-variant]">
-                        <Zap className="h-3.5 w-3.5" aria-hidden="true" />
-                        <span className="text-xs font-medium">Up to date</span>
-                    </div>
-                )}
+                {/* Errors - red */}
+                <div className={cn(
+                    'flex items-center gap-1.5',
+                    stats.errors > 0 ? 'text-red-600' : 'text-[--color-on-surface-variant]'
+                )}>
+                    <AlertTriangle className="h-4 w-4" aria-hidden="true" />
+                    <span className="text-sm font-medium">{stats.errors}</span>
+                    <span className="text-xs">errors</span>
+                </div>
             </div>
         </button>
     )
