@@ -52,3 +52,19 @@ INSERT INTO agent_configs (key, value) VALUES
     ('career-scout', '{"regions_include": ["EMEA"], "regions_exclude": ["US", "AU"], "bangkok_observatory": true, "language_priority": 80, "engagement_types": ["full-time", "contract", "fractional"], "auto_apply": true}'),
     ('linkedin-researcher', '{"topics": ["Frontier AI", "RAG", "Agentic AI"], "personas": ["eu-regulation", "mittelstand", "cto-bizdev"], "output_format": "both"}')
 ON CONFLICT (key) DO NOTHING;
+
+-- Enable Row Level Security
+ALTER TABLE agent_configs ENABLE ROW LEVEL SECURITY;
+ALTER TABLE agent_logs ENABLE ROW LEVEL SECURITY;
+ALTER TABLE business_metrics ENABLE ROW LEVEL SECURITY;
+
+-- Create policies for anonymous access (local development)
+CREATE POLICY "Allow anonymous read access" ON agent_configs FOR SELECT USING (true);
+CREATE POLICY "Allow anonymous write access" ON agent_configs FOR ALL USING (true);
+
+CREATE POLICY "Allow anonymous read access" ON agent_logs FOR SELECT USING (true);
+CREATE POLICY "Allow anonymous write access" ON agent_logs FOR ALL USING (true);
+
+CREATE POLICY "Allow anonymous read access" ON business_metrics FOR SELECT USING (true);
+CREATE POLICY "Allow anonymous write access" ON business_metrics FOR ALL USING (true);
+
