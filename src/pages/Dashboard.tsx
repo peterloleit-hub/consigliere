@@ -34,11 +34,13 @@ export default function Dashboard() {
             <aside
                 className={cn(
                     'flex-shrink-0 space-y-3 overflow-y-auto',
+                    /* Board styling: Distinct background container */
+                    'bg-[--color-surface-container-high] rounded-2xl p-3',
                     /* Desktop: fixed width sidebar */
                     'md:w-80 lg:w-96',
                     /* Mobile: horizontal scroll or stacked */
                     'flex flex-row md:flex-col gap-3 overflow-x-auto md:overflow-x-visible pb-2 md:pb-0',
-                    '-mx-4 px-4 md:mx-0 md:px-0'
+                    '-mx-4 px-4 md:mx-0'
                 )}
                 role="listbox"
                 aria-label="Agent list"

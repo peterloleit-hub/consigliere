@@ -2,41 +2,61 @@
 
 /* Command Center Theme - Marine Light Mode */
 @theme {
-  /* Marine primary palette - Teal */
-  --color-primary-50: oklch(0.97 0.03 200);
-  --color-primary-100: oklch(0.92 0.06 200);
-  --color-primary-200: oklch(0.85 0.10 200);
-  --color-primary-300: oklch(0.75 0.14 200);
-  --color-primary-400: oklch(0.60 0.16 200);
-  --color-primary-500: oklch(0.48 0.14 200);
-  --color-primary-600: oklch(0.40 0.12 200);
-  --color-primary-700: oklch(0.33 0.10 200);
-  --color-primary-800: oklch(0.28 0.08 200);
-  --color-primary-900: oklch(0.22 0.06 200);
+  /* Gilded Executive Theme */
 
-  /* Accent for selection highlight */
-  --color-accent: oklch(0.55 0.16 200);
+  /* Primary Structure (The Blue) - IBM Blue #0F62FE base */
+  --color-primary-50: #eff6ff;
+  --color-primary-100: #dbeafe;
+  --color-primary-200: #bfdbfe;
+  --color-primary-300: #93c5fd;
+  --color-primary-400: #60a5fa;
+  --color-primary-500: #0F62FE;
+  /* Base */
+  --color-primary-600: #2563eb;
+  --color-primary-700: #1d4ed8;
+  --color-primary-800: #1e40af;
+  --color-primary-900: #1e3a8a;
 
-  /* Surface colors - light with subtle teal tint */
-  --color-surface: oklch(0.99 0.005 200);
-  --color-surface-dim: oklch(0.96 0.01 200);
-  --color-surface-container: oklch(0.97 0.008 200);
-  --color-surface-container-high: oklch(0.95 0.01 200);
-  --color-surface-container-highest: oklch(0.92 0.012 200);
+  /* Premium Accent (The Gold) - Antique Brass #B5924F */
+  --color-accent: #B5924F;
+  --color-accent-subtle: #F9F6F0;
+  /* Gold Tint for selection */
 
-  /* Status colors */
-  --color-success: oklch(0.55 0.16 145);
-  --color-warning: oklch(0.55 0.14 85);
-  --color-error: oklch(0.50 0.20 25);
+  /* Strategic Command Palette (The Airforce Blue) */
+  --color-strategic: #1E3A8A;
+  /* Deep Navy */
+  --color-strategic-surface: #F0F4F8;
+  /* Cool Blue-Grey Canvas */
+  --color-strategic-border: #CBD5E1;
+  /* Precision Blue-Grey */
+
+  /* Surfaces */
+  --color-surface: #FFFFFF;
+  /* Cards & Panels */
+  --color-background: var(--color-strategic-surface);
+  /* App Canvas */
+
+  /* Container colors */
+  --color-surface-container: var(--color-strategic-surface);
+  --color-surface-container-high: var(--color-strategic-border);
+  --color-surface-container-highest: #E2E8F0;
+
+  /* Status colors (Unchanged) */
+  --color-success: #22C55E;
+  --color-warning: #EAB308;
+  /* Standard warning, user didn't specify so keeping safer goldy-yellow */
+  --color-error: #EF4444;
 
   /* Status container colors */
-  --color-success-container: oklch(0.90 0.08 145);
-  --color-warning-container: oklch(0.90 0.08 85);
-  --color-error-container: oklch(0.90 0.10 25);
+  --color-success-container: #DCFCE7;
+  --color-warning-container: #FEF9C3;
+  --color-error-container: #FEE2E2;
 
   /* Text colors */
-  --color-on-surface: oklch(0.20 0.02 200);
-  --color-on-surface-variant: oklch(0.40 0.03 200);
+  --color-on-surface: #161C2D;
+  /* Deep Charcoal */
+  --color-on-surface-variant: #64748B;
+  /* Cool Slate Grey */
 
   /* Spacing */
   --spacing-page: 1rem;
@@ -50,21 +70,10 @@
   /* MD3 Elevation System */
   --elevation-0: none;
   --elevation-1: 0 1px 2px 0 rgb(0 0 0 / 0.05), 0 1px 3px 0 rgb(0 0 0 / 0.05);
-  --elevation-2: 0 1px 2px 0 rgb(0 0 0 / 0.06), 0 2px 6px 0 rgb(0 0 0 / 0.1);
-  --elevation-3: 0 1px 3px 0 rgb(0 0 0 / 0.08), 0 4px 8px 0 rgb(0 0 0 / 0.12);
-  --elevation-4: 0 2px 4px 0 rgb(0 0 0 / 0.08), 0 6px 12px 0 rgb(0 0 0 / 0.16);
-  --elevation-5: 0 4px 6px 0 rgb(0 0 0 / 0.1), 0 10px 20px 0 rgb(0 0 0 / 0.2);
-
-  /* Legacy shadow aliases */
-  --shadow-sm: var(--elevation-1);
-  --shadow-md: var(--elevation-2);
-  --shadow-lg: var(--elevation-3);
-  --shadow-xl: var(--elevation-4);
-
-  /* State layer opacities */
-  --state-hover: 0.08;
-  --state-focus: 0.12;
-  --state-pressed: 0.12;
+  --elevation-2: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -1px rgb(0 0 0 / 0.06);
+  --elevation-3: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -2px rgb(0 0 0 / 0.05);
+  --elevation-4: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 10px 10px -5px rgb(0 0 0 / 0.04);
+  --elevation-5: 0 25px 50px -12px rgb(0 0 0 / 0.25);
 
   /* Font */
   --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
@@ -79,7 +88,7 @@ html {
 }
 
 body {
-  background-color: var(--color-surface);
+  background-color: var(--color-background);
   color: var(--color-on-surface);
   min-height: 100dvh;
 }

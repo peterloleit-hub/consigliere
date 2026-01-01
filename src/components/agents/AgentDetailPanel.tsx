@@ -1,4 +1,4 @@
-import { Play, X, AlertCircle, CheckCircle2, Clock, Loader2, ArrowRight } from 'lucide-react'
+import { Play, X, AlertCircle, CheckCircle2, Clock, Loader2, ArrowRight, Shield } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { formatRelativeTime } from '@/lib/utils'
 import { useTriggerAgent, useAgentLogsByName } from '@/hooks'
@@ -71,18 +71,22 @@ export function AgentDetailPanel({ agent, onClose }: AgentDetailPanelProps) {
     }
 
     return (
-        <div className="h-full flex flex-col bg-[--color-surface-container] rounded-xl shadow-[--elevation-2] overflow-hidden">
+        <div className="h-full flex flex-col bg-[--color-surface] rounded-xl shadow-[--elevation-2] overflow-hidden border border-[--color-surface-container-high]">
             {/* Header */}
-            <header className="flex items-start justify-between gap-4 p-4 border-b border-[--color-surface-container-highest]">
-                <div className="flex items-start gap-3">
-                    <div className="p-2.5 rounded-xl bg-[--color-primary-100]">
+            <header className="flex items-start justify-between gap-4 p-6 border-b border-[--color-surface-container-highest]">
+                <div className="flex items-start gap-4">
+                    <div className="p-3 rounded-xl bg-[--color-primary-100]">
                         <AgentIcon className="h-6 w-6 text-[--color-primary-600]" aria-hidden="true" />
                     </div>
                     <div>
-                        <h2 className="text-lg font-semibold text-[--color-on-surface]">
-                            {agent.name}
-                        </h2>
-                        <p className="text-sm text-[--color-on-surface-variant] mt-0.5">
+                        <div className="flex items-center gap-2">
+                            <h2 className="text-xl font-bold text-[--color-on-surface]">
+                                {agent.name}
+                            </h2>
+                            {/* Gold Shield for Premium feel */}
+                            <Shield className="h-5 w-5 text-[var(--color-accent)] fill-[var(--color-accent-subtle)]" />
+                        </div>
+                        <p className="text-sm text-[--color-on-surface-variant] mt-1">
                             {agent.description}
                         </p>
                     </div>
@@ -91,7 +95,7 @@ export function AgentDetailPanel({ agent, onClose }: AgentDetailPanelProps) {
                 {/* Close button - only on mobile */}
                 <button
                     onClick={onClose}
-                    className="p-2 rounded-lg hover:bg-[--color-surface-container-high] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[--color-accent] md:hidden"
+                    className="p-2 rounded-lg hover:bg-[--color-surface-container-high] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-accent)] md:hidden"
                     aria-label="Close detail panel"
                 >
                     <X className="h-5 w-5 text-[--color-on-surface-variant]" />
@@ -99,10 +103,10 @@ export function AgentDetailPanel({ agent, onClose }: AgentDetailPanelProps) {
             </header>
 
             {/* Status & Route */}
-            <div className="px-4 py-4 border-b border-[--color-surface-container-highest]">
-                <div className="flex items-center justify-between mb-4">
+            <div className="px-6 py-6 border-b border-[--color-surface-container-highest]">
+                <div className="flex items-center justify-between mb-6">
                     <div className="flex items-center gap-2">
-                        <span className={cn('flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium', statusConfig.bg, statusConfig.color)}>
+                        <span className={cn('flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-medium', statusConfig.bg, statusConfig.color)}>
                             <StatusIcon className={cn('h-3.5 w-3.5', status === 'pending' && 'animate-spin')} aria-hidden="true" />
                             {statusConfig.label}
                         </span>
@@ -114,20 +118,20 @@ export function AgentDetailPanel({ agent, onClose }: AgentDetailPanelProps) {
                     </div>
                 </div>
 
-                {/* Route display */}
-                <div className="flex items-center justify-center gap-4 py-4 px-6 rounded-xl bg-[--color-surface]">
+                {/* Route display - Gilded Metrics */}
+                <div className="flex items-center justify-center gap-8 py-6 px-6 rounded-2xl bg-[--color-surface-container] border border-[--color-surface-container-high]">
                     <div className="text-center">
-                        <div className="font-mono text-2xl font-bold text-[--color-on-surface] tracking-tight">
+                        <div className="font-mono text-3xl font-bold text-[var(--color-accent)] tracking-tight">
                             {agent.route.source}
                         </div>
-                        <div className="text-xs text-[--color-on-surface-variant] mt-1">SOURCE</div>
+                        <div className="text-xs font-semibold text-[--color-on-surface-variant] mt-1 uppercase tracking-wider">SOURCE</div>
                     </div>
-                    <ArrowRight className="h-6 w-6 text-[--color-on-surface-variant]" aria-hidden="true" />
+                    <ArrowRight className="h-6 w-6 text-[--color-on-surface-variant]/50" aria-hidden="true" />
                     <div className="text-center">
-                        <div className="font-mono text-2xl font-bold text-[--color-on-surface] tracking-tight">
+                        <div className="font-mono text-3xl font-bold text-[var(--color-accent)] tracking-tight">
                             {agent.route.destination}
                         </div>
-                        <div className="text-xs text-[--color-on-surface-variant] mt-1">OUTPUT</div>
+                        <div className="text-xs font-semibold text-[--color-on-surface-variant] mt-1 uppercase tracking-wider">OUTPUT</div>
                     </div>
                 </div>
             </div>
@@ -188,15 +192,20 @@ export function AgentDetailPanel({ agent, onClose }: AgentDetailPanelProps) {
                         'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[--color-primary-300] focus-visible:ring-offset-2',
                         'active:scale-[0.98] active:bg-[--color-primary-700]',
                         'disabled:opacity-50 disabled:cursor-not-allowed disabled:active:scale-100',
-                        'transition-all duration-150'
+                        'transition-all duration-150 shadow-[var(--elevation-1)] hover:shadow-[var(--elevation-2)]'
                     )}
                 >
                     {triggering ? (
-                        <Loader2 className="h-4 w-4 animate-spin" aria-hidden="true" />
+                        <>
+                            <Loader2 className="h-4 w-4 animate-spin" aria-hidden="true" />
+                            <span>Initiating Protocol...</span>
+                        </>
                     ) : (
-                        <Play className="h-4 w-4" aria-hidden="true" />
+                        <>
+                            <Play className="h-4 w-4 fill-current" aria-hidden="true" />
+                            <span>Run Agent Override</span>
+                        </>
                     )}
-                    <span>{triggering ? 'Triggering...' : 'Trigger Now'}</span>
                 </button>
             </div>
         </div>

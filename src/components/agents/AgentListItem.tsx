@@ -80,19 +80,24 @@ export function AgentListItem({ agent, isSelected, onSelect }: AgentListItemProp
             onClick={onSelect}
             aria-pressed={isSelected}
             className={cn(
-                /* MD3 Elevated Card */
-                'w-full text-left p-4 rounded-xl',
-                'bg-[--color-surface-container-low] md:bg-[--color-surface-container]', // Use container-low if available, else container
-                'border-2', // Keep border-2 for layout stability
+                /* Gilded Executive Card Styles */
+                'group relative w-full text-left p-4 rounded-xl transition-all duration-200 ease-in-out',
+
                 isSelected
-                    ? 'border-[--color-accent] shadow-[--elevation-3] bg-[--color-surface-container-high]'
-                    : 'border-transparent shadow-[--elevation-1]', // Transparent border = visual "no border" but no layout shift
-                /* Hover & transitions */
-                'hover:shadow-[--elevation-2] hover:bg-[--color-surface-container-high]',
-                'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[--color-accent] focus-visible:ring-offset-2',
-                'transition-all duration-200 ease-in-out'
+                    ? 'border-2 border-[var(--color-accent)] bg-[var(--color-accent-subtle)] shadow-none' // Selected: Gold Border + Gold Tint
+                    : 'bg-[var(--color-surface)] border border-[var(--color-strategic-border)] hover:border-[var(--color-strategic)] hover:shadow-[var(--elevation-2)] shadow-[var(--elevation-1)]', // Resting: White + Strategic Border | Hover: Strategic Blue Border
+
+                'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[--color-primary-500] focus-visible:ring-offset-2'
             )}
         >
+            {/* Gold Vertical Indicator for Selected State */}
+            {isSelected && (
+                <div
+                    className="absolute left-0 top-0 bottom-0 w-1.5 bg-[var(--color-accent)] rounded-l-[10px]"
+                    aria-hidden="true"
+                />
+            )}
+
             <div className="flex items-start gap-3.5">
                 {/* Large Icon */}
                 <div className="p-2.5 rounded-xl bg-[--color-primary-100] flex-shrink-0 mt-0.5">

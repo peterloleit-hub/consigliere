@@ -2,7 +2,7 @@ import { useQuery } from '@tanstack/react-query'
 import { supabase } from '@/lib/supabase'
 import type { AgentLog } from '@/types/database'
 
-const POLLING_INTERVAL = 30000 // 30 seconds
+const POLLING_INTERVAL = 5000 // 5 seconds
 
 /** Fetch agent logs with polling */
 export function useAgentLogs(limit = 20) {
