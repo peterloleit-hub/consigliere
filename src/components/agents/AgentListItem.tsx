@@ -80,17 +80,17 @@ export function AgentListItem({ agent, isSelected, onSelect }: AgentListItemProp
             onClick={onSelect}
             aria-pressed={isSelected}
             className={cn(
-                /* Wider card */
+                /* MD3 Elevated Card */
                 'w-full text-left p-4 rounded-xl',
-                'bg-[--color-surface-container]',
-                'border-2',
+                'bg-[--color-surface-container-low] md:bg-[--color-surface-container]', // Use container-low if available, else container
+                'border-2', // Keep border-2 for layout stability
                 isSelected
-                    ? 'border-[--color-accent] shadow-[--elevation-3]'
-                    : 'border-[--color-surface-container-highest] shadow-[--elevation-1]',
+                    ? 'border-[--color-accent] shadow-[--elevation-3] bg-[--color-surface-container-high]'
+                    : 'border-transparent shadow-[--elevation-1]', // Transparent border = visual "no border" but no layout shift
                 /* Hover & transitions */
-                'hover:shadow-[--elevation-2] hover:border-[--color-primary-300]',
+                'hover:shadow-[--elevation-2] hover:bg-[--color-surface-container-high]',
                 'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[--color-accent] focus-visible:ring-offset-2',
-                'transition-all duration-200'
+                'transition-all duration-200 ease-in-out'
             )}
         >
             <div className="flex items-start gap-3.5">
