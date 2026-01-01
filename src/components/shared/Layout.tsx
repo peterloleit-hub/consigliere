@@ -15,12 +15,21 @@ export function Layout() {
             <Header />
 
             {/* Main content area */}
-            <main className="flex-1 overflow-y-auto pb-20">
+            <main className="flex-1 overflow-y-auto pb-20" id="main-content">
                 <Outlet />
             </main>
 
-            {/* Bottom tab navigation - thumb-friendly for mobile */}
-            <nav className="fixed bottom-0 left-0 right-0 z-50 bg-[--color-surface]/95 backdrop-blur-sm border-t border-[--color-surface-container-highest] nav-bottom">
+            {/* Bottom tab navigation - ARIA labeled for screen readers */}
+            <nav
+                className={cn(
+                    'fixed bottom-0 left-0 right-0 z-50',
+                    'bg-[--color-surface]/95 backdrop-blur-sm',
+                    'border-t border-[--color-surface-container-highest]',
+                    'shadow-[--elevation-2]',
+                    'nav-bottom'
+                )}
+                aria-label="Primary navigation"
+            >
                 <div className="flex items-center justify-around h-16 max-w-lg mx-auto">
                     {navItems.map(({ to, icon: Icon, label }) => (
                         <NavLink
@@ -28,9 +37,19 @@ export function Layout() {
                             to={to}
                             className={({ isActive }) =>
                                 cn(
-                                    'flex flex-col items-center justify-center gap-1 w-full h-full transition-colors',
-                                    'text-[--color-on-surface-variant] hover:text-[--color-primary-600]',
-                                    isActive && 'text-[--color-primary-600]'
+                                    /* Full height for 48px+ touch target */
+                                    'flex flex-col items-center justify-center gap-1 w-full h-full',
+                                    'min-h-12 min-w-12',
+                                    /* Base colors */
+                                    'text-[--color-on-surface-variant]',
+                                    /* Hover state */
+                                    'hover:text-[--color-primary-600]',
+                                    /* Focus visible for keyboard navigation */
+                                    'focus-visible:outline-none focus-visible:bg-[--color-primary-500]/[0.08] rounded-lg',
+                                    /* Active state */
+                                    isActive && 'text-[--color-primary-600]',
+                                    /* Transition */
+                                    'transition-colors duration-150'
                                 )
                             }
                         >
@@ -38,13 +57,15 @@ export function Layout() {
                                 <>
                                     <div
                                         className={cn(
-                                            'p-1.5 rounded-full transition-colors',
+                                            /* Icon container: 40px for comfortable touch */
+                                            'p-2.5 rounded-2xl transition-colors',
                                             isActive && 'bg-[--color-primary-100]'
                                         )}
                                     >
-                                        <Icon className="h-5 w-5" />
+                                        <Icon className="h-5 w-5" aria-hidden="true" />
                                     </div>
-                                    <span className="text-[11px] font-medium">{label}</span>
+                                    {/* Label: rem-based for scaling */}
+                                    <span className="text-[0.6875rem] font-medium">{label}</span>
                                 </>
                             )}
                         </NavLink>

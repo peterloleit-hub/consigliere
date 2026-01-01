@@ -11,13 +11,33 @@ interface AgentCardProps {
 function getStatusConfig(status: AgentStatus | undefined) {
     switch (status) {
         case 'success':
-            return { icon: CheckCircle2, color: 'text-[--color-success]', bg: 'bg-[--color-success]/10', label: 'Active' }
+            return {
+                icon: CheckCircle2,
+                color: 'text-[--color-success]',
+                bg: 'bg-[--color-success-container]',
+                label: 'Active'
+            }
         case 'error':
-            return { icon: AlertCircle, color: 'text-[--color-error]', bg: 'bg-[--color-error]/10', label: 'Error' }
+            return {
+                icon: AlertCircle,
+                color: 'text-[--color-error]',
+                bg: 'bg-[--color-error-container]',
+                label: 'Error'
+            }
         case 'pending':
-            return { icon: Loader2, color: 'text-[--color-warning]', bg: 'bg-[--color-warning]/10', label: 'Running' }
+            return {
+                icon: Loader2,
+                color: 'text-[--color-warning]',
+                bg: 'bg-[--color-warning-container]',
+                label: 'Running'
+            }
         default:
-            return { icon: Clock, color: 'text-[--color-on-surface-variant]', bg: 'bg-[--color-surface-container]', label: 'Idle' }
+            return {
+                icon: Clock,
+                color: 'text-[--color-on-surface-variant]',
+                bg: 'bg-[--color-surface-container-high]',
+                label: 'Idle'
+            }
     }
 }
 
@@ -35,12 +55,19 @@ export function AgentCard({ agent }: AgentCardProps) {
     }
 
     return (
-        <div className="rounded-xl bg-[--color-surface-container] p-4 shadow-[--shadow-md]">
+        <article
+            className={cn(
+                'rounded-xl bg-[--color-surface-container] p-4',
+                /* MD3 Level 1 for resting card, Level 2 on hover */
+                'shadow-[--elevation-1] hover:shadow-[--elevation-2]',
+                'transition-shadow duration-200'
+            )}
+        >
             {/* Header */}
             <div className="flex items-start justify-between gap-3 mb-3">
                 <div className="flex items-center gap-3">
                     <div className="p-2 rounded-lg bg-[--color-primary-100]">
-                        <AgentIcon className="h-5 w-5 text-[--color-primary-600]" />
+                        <AgentIcon className="h-5 w-5 text-[--color-primary-600]" aria-hidden="true" />
                     </div>
                     <div>
                         <h3 className="font-medium text-[--color-on-surface]">{agent.name}</h3>
@@ -55,7 +82,11 @@ export function AgentCard({ agent }: AgentCardProps) {
             <div className="flex items-center justify-between">
                 <div className="flex items-center gap-2">
                     {logLoading ? (
-                        <div className="h-6 w-16 rounded-full bg-[--color-surface-container-high] animate-pulse" />
+                        <div
+                            className="h-6 w-16 rounded-full bg-[--color-surface-container-high] animate-pulse"
+                            role="status"
+                            aria-label="Loading status"
+                        />
                     ) : (
                         <span
                             className={cn(
@@ -63,37 +94,57 @@ export function AgentCard({ agent }: AgentCardProps) {
                                 statusConfig.bg,
                                 statusConfig.color
                             )}
+                            role="status"
+                            aria-live="polite"
                         >
-                            <StatusIcon className={cn('h-3.5 w-3.5', status === 'pending' && 'animate-spin')} />
+                            <StatusIcon
+                                className={cn('h-3.5 w-3.5', status === 'pending' && 'animate-spin')}
+                                aria-hidden="true"
+                            />
                             {statusConfig.label}
                         </span>
                     )}
                     {latestLog?.created_at && (
-                        <span className="text-xs text-[--color-on-surface-variant]">
+                        <time
+                            dateTime={latestLog.created_at}
+                            className="text-xs text-[--color-on-surface-variant]"
+                        >
                             {formatRelativeTime(latestLog.created_at)}
-                        </span>
+                        </time>
                     )}
                 </div>
 
-                {/* Trigger button */}
+                {/* Trigger button — 48px min touch target */}
                 <button
                     onClick={handleTrigger}
                     disabled={triggering}
+                    aria-busy={triggering}
                     className={cn(
-                        'inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium transition-colors',
-                        'bg-[--color-primary-500] text-white hover:bg-[--color-primary-600]',
-                        'disabled:opacity-50 disabled:cursor-not-allowed',
-                        'active:scale-95'
+                        /* 48px min touch target */
+                        'inline-flex items-center justify-center gap-2 min-h-12 px-4 rounded-xl',
+                        'text-sm font-medium',
+                        /* Colors */
+                        'bg-[--color-primary-500] text-white',
+                        /* Hover state */
+                        'hover:bg-[--color-primary-600]',
+                        /* Focus ring for keyboard users */
+                        'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[--color-primary-300] focus-visible:ring-offset-2',
+                        /* Pressed state */
+                        'active:scale-[0.98] active:bg-[--color-primary-700]',
+                        /* Disabled state */
+                        'disabled:opacity-50 disabled:cursor-not-allowed disabled:active:scale-100',
+                        /* Transition */
+                        'transition-all duration-150'
                     )}
                 >
                     {triggering ? (
-                        <Loader2 className="h-3.5 w-3.5 animate-spin" />
+                        <Loader2 className="h-4 w-4 animate-spin" aria-hidden="true" />
                     ) : (
-                        <Play className="h-3.5 w-3.5" />
+                        <Play className="h-4 w-4" aria-hidden="true" />
                     )}
-                    Trigger
+                    <span>{triggering ? 'Triggering...' : 'Trigger'}</span>
                 </button>
             </div>
-        </div>
+        </article>
     )
 }

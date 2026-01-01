@@ -8,13 +8,14 @@ export function Header() {
                 {/* Branding */}
                 <div className="flex items-center gap-2">
                     <div className="p-1.5 rounded-lg bg-[--color-primary-500]">
-                        <Radar className="h-5 w-5 text-white" />
+                        <Radar className="h-5 w-5 text-white" aria-hidden="true" />
                     </div>
                     <div>
                         <h1 className="text-base font-semibold text-[--color-on-surface]">
                             Mission Control
                         </h1>
-                        <p className="text-[10px] text-[--color-on-surface-variant] -mt-0.5">
+                        {/* Fixed: rem-based instead of 10px */}
+                        <p className="text-[0.625rem] text-[--color-on-surface-variant] -mt-0.5">
                             Agentic AI CoS
                         </p>
                     </div>
