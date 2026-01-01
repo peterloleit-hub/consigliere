@@ -19,53 +19,41 @@ export function Layout() {
                 <Outlet />
             </main>
 
-            {/* Bottom tab navigation - ARIA labeled for screen readers */}
+            {/* Bottom tab navigation - Frosted Command Deck */}
             <nav
                 className={cn(
                     'fixed bottom-0 left-0 right-0 z-50',
-                    'bg-[--color-surface]/95 backdrop-blur-sm',
-                    'border-t border-[--color-surface-container-highest]',
-                    'shadow-[--elevation-2]',
-                    'nav-bottom'
+                    'bg-[var(--color-surface)]/90 backdrop-blur-md',
+                    'border-t-2 border-[var(--color-primary-600)]',
+                    'shadow-[0_-4px_20px_rgba(0,0,0,0.3)]',
+                    'nav-bottom py-3'
                 )}
                 aria-label="Primary navigation"
             >
-                <div className="flex items-center justify-around h-16 max-w-lg mx-auto">
+                <div className="flex items-center justify-center gap-4 max-w-lg mx-auto px-4">
                     {navItems.map(({ to, icon: Icon, label }) => (
                         <NavLink
                             key={to}
                             to={to}
                             className={({ isActive }) =>
                                 cn(
-                                    /* Full height for 48px+ touch target */
-                                    'flex flex-col items-center justify-center gap-1 w-full h-full',
-                                    'min-h-12 min-w-12',
-                                    /* Base colors */
-                                    'text-[--color-on-surface-variant]',
-                                    /* Hover state */
-                                    'hover:text-[--color-primary-600]',
-                                    /* Focus visible for keyboard navigation */
-                                    'focus-visible:outline-none focus-visible:bg-[--color-primary-500]/[0.08] rounded-lg',
-                                    /* Active state */
-                                    isActive && 'text-[--color-primary-600]',
-                                    /* Transition */
-                                    'transition-colors duration-150'
+                                    /* Base Button Style */
+                                    'flex flex-col items-center justify-center gap-1 w-full h-16 rounded-xl border-2 transition-all duration-200',
+
+                                    /* Active vs Inactive State */
+                                    isActive
+                                        ? 'border-[var(--color-accent)] bg-[var(--color-accent-subtle)] text-[var(--color-accent)] shadow-[0_0_15px_rgba(212,175,55,0.15)] scale-105'
+                                        : 'border-white/10 text-white/60 hover:bg-white/5 hover:border-white/30 hover:text-white',
+
+                                    /* Focus */
+                                    'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-accent)]'
                                 )
                             }
                         >
                             {({ isActive }) => (
                                 <>
-                                    <div
-                                        className={cn(
-                                            /* Icon container: 40px for comfortable touch */
-                                            'p-2.5 rounded-2xl transition-colors',
-                                            isActive && 'bg-[--color-primary-100]'
-                                        )}
-                                    >
-                                        <Icon className="h-5 w-5" aria-hidden="true" />
-                                    </div>
-                                    {/* Label: rem-based for scaling */}
-                                    <span className="text-[0.6875rem] font-medium">{label}</span>
+                                    <Icon className={cn("h-5 w-5", isActive && "drop-shadow-[0_0_5px_currentColor]")} aria-hidden="true" />
+                                    <span className="text-[0.65rem] font-bold uppercase tracking-wider">{label}</span>
                                 </>
                             )}
                         </NavLink>

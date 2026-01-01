@@ -80,14 +80,14 @@ export function AgentListItem({ agent, isSelected, onSelect }: AgentListItemProp
             onClick={onSelect}
             aria-pressed={isSelected}
             className={cn(
-                /* Gilded Executive Card Styles */
-                'group relative w-full text-left p-4 rounded-xl transition-all duration-200 ease-in-out',
+                /* Strategic Command Dark Protocol Card Styles */
+                'group relative w-full text-left p-4 rounded-xl transition-all duration-300 ease-out backdrop-blur-sm',
 
                 isSelected
-                    ? 'border-2 border-[var(--color-accent)] bg-[var(--color-accent-subtle)] shadow-none' // Selected: Gold Border + Gold Tint
-                    : 'bg-[var(--color-surface)] border border-[var(--color-strategic-border)] hover:border-[var(--color-strategic)] hover:shadow-[var(--elevation-2)] shadow-[var(--elevation-1)]', // Resting: White + Strategic Border | Hover: Strategic Blue Border
+                    ? 'border border-[var(--color-accent)] bg-[var(--color-accent-subtle)] shadow-[var(--elevation-3)]' // Selected: Gold Border + Glow
+                    : 'bg-[var(--color-surface)]/40 border border-[var(--color-surface-container-high)] hover:border-[var(--color-strategic)]/60 hover:shadow-[var(--elevation-2)] hover:bg-[var(--color-surface)]/60', // Resting: Glassy | Hover: Blue Tech Glow
 
-                'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[--color-primary-500] focus-visible:ring-offset-2'
+                'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[--color-primary-500] focus-visible:ring-offset-2 focus-visible:ring-offset-[--color-surface]'
             )}
         >
             {/* Gold Vertical Indicator for Selected State */}

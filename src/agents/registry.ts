@@ -1,4 +1,4 @@
-import { BarChart3, Briefcase, Linkedin } from 'lucide-react'
+import { BarChart3, Briefcase, Calendar, Linkedin } from 'lucide-react'
 import type { AgentDefinition } from '@/types/agent'
 
 /** Business Intelligence Agent - Thai Tone Trainer metrics */
@@ -164,11 +164,47 @@ const linkedinResearcher: AgentDefinition = {
     ],
 }
 
+/** Personal Assistant - Scheduling & Travel */
+const personalAssistant: AgentDefinition = {
+    id: 'personal-assistant',
+    name: 'Personal Assistant',
+    description: 'Appointment Scheduling and Travel Planning',
+    icon: Calendar,
+    category: 'lifestyle',
+    webhookEnvKey: 'VITE_N8N_PERSONAL_ASSISTANT_URL',
+    route: { source: 'Schedule', destination: 'Itinerary' },
+    configFields: [
+        {
+            key: 'calendar_providers',
+            label: 'Calendar Providers',
+            type: 'multi-select',
+            options: [
+                { value: 'google', label: 'Google Calendar' },
+                { value: 'outlook', label: 'Outlook' },
+                { value: 'icloud', label: 'iCloud' },
+            ],
+            defaultValue: ['google', 'outlook'],
+        },
+        {
+            key: 'travel_class',
+            label: 'Travel Class',
+            type: 'select',
+            options: [
+                { value: 'economy', label: 'Economy' },
+                { value: 'business', label: 'Business' },
+                { value: 'first', label: 'First Class' },
+            ],
+            defaultValue: 'business',
+        },
+    ],
+}
+
 /** Central agent registry - add new agents here */
 export const AGENTS: AgentDefinition[] = [
     businessIntel,
     careerScout,
     linkedinResearcher,
+    personalAssistant,
 ]
 
 /** Get agent by ID */

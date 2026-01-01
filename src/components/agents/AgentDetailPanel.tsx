@@ -71,22 +71,23 @@ export function AgentDetailPanel({ agent, onClose }: AgentDetailPanelProps) {
     }
 
     return (
-        <div className="h-full flex flex-col bg-[--color-surface] rounded-xl shadow-[--elevation-2] overflow-hidden border border-[--color-surface-container-high]">
-            {/* Header */}
-            <header className="flex items-start justify-between gap-4 p-6 border-b border-[--color-surface-container-highest]">
+        /* Dark Protocol: Deep Navy Surface + Subtle Border */
+        <div className="h-full flex flex-col bg-[var(--color-surface)] rounded-xl shadow-[var(--elevation-3)] overflow-hidden border border-[var(--color-surface-container-high)]">
+            {/* Header: Darker Contrast for HUD feel */}
+            <header className="flex items-start justify-between gap-4 p-6 border-b border-[var(--color-surface-container-highest)] bg-[var(--color-background)]/50">
                 <div className="flex items-start gap-4">
-                    <div className="p-3 rounded-xl bg-[--color-primary-100]">
-                        <AgentIcon className="h-6 w-6 text-[--color-primary-600]" aria-hidden="true" />
+                    <div className="p-3 rounded-xl bg-[var(--color-primary-900)] border border-[var(--color-primary-700)]">
+                        <AgentIcon className="h-6 w-6 text-[var(--color-primary-400)]" aria-hidden="true" />
                     </div>
                     <div>
                         <div className="flex items-center gap-2">
-                            <h2 className="text-xl font-bold text-[--color-on-surface]">
+                            <h2 className="text-xl font-bold text-[var(--color-on-surface)] tracking-tight font-[family-name:var(--font-sans)]">
                                 {agent.name}
                             </h2>
-                            {/* Gold Shield for Premium feel */}
-                            <Shield className="h-5 w-5 text-[var(--color-accent)] fill-[var(--color-accent-subtle)]" />
+                            {/* Presidential Shield Seal */}
+                            <Shield className="h-5 w-5 text-[var(--color-accent)] fill-[var(--color-accent-subtle)] drop-shadow-[0_0_8px_rgba(212,175,55,0.4)]" />
                         </div>
-                        <p className="text-sm text-[--color-on-surface-variant] mt-1">
+                        <p className="text-sm text-[var(--color-on-surface-variant)] mt-1">
                             {agent.description}
                         </p>
                     </div>
@@ -95,51 +96,51 @@ export function AgentDetailPanel({ agent, onClose }: AgentDetailPanelProps) {
                 {/* Close button - only on mobile */}
                 <button
                     onClick={onClose}
-                    className="p-2 rounded-lg hover:bg-[--color-surface-container-high] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-accent)] md:hidden"
+                    className="p-2 rounded-lg hover:bg-[var(--color-surface-container-high)] text-[var(--color-on-surface-variant)] hover:text-[var(--color-on-surface)] transition-colors md:hidden"
                     aria-label="Close detail panel"
                 >
-                    <X className="h-5 w-5 text-[--color-on-surface-variant]" />
+                    <X className="h-5 w-5" />
                 </button>
             </header>
 
             {/* Status & Route */}
-            <div className="px-6 py-6 border-b border-[--color-surface-container-highest]">
+            <div className="px-6 py-6 border-b border-[var(--color-surface-container-highest)]">
                 <div className="flex items-center justify-between mb-6">
                     <div className="flex items-center gap-2">
-                        <span className={cn('flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-medium', statusConfig.bg, statusConfig.color)}>
+                        <span className={cn('flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-medium border border-transparent', statusConfig.bg, statusConfig.color)}>
                             <StatusIcon className={cn('h-3.5 w-3.5', status === 'pending' && 'animate-spin')} aria-hidden="true" />
                             {statusConfig.label}
                         </span>
                         {latestLog?.created_at && (
-                            <time dateTime={latestLog.created_at} className="text-xs text-[--color-on-surface-variant]">
+                            <time dateTime={latestLog.created_at} className="text-xs text-[var(--color-on-surface-variant)] font-mono">
                                 {formatRelativeTime(latestLog.created_at)}
                             </time>
                         )}
                     </div>
                 </div>
 
-                {/* Route display - Gilded Metrics */}
-                <div className="flex items-center justify-center gap-8 py-6 px-6 rounded-2xl bg-[--color-surface-container] border border-[--color-surface-container-high]">
+                {/* Route display - HUD Metrics */}
+                <div className="flex items-center justify-center gap-8 py-6 px-6 rounded-2xl bg-[var(--color-background)] border border-[var(--color-primary-800)] shadow-inner">
                     <div className="text-center">
-                        <div className="font-mono text-3xl font-bold text-[var(--color-accent)] tracking-tight">
+                        <div className="font-mono text-3xl font-bold text-[var(--color-accent)] tracking-tight drop-shadow-[0_0_10px_rgba(212,175,55,0.2)]">
                             {agent.route.source}
                         </div>
-                        <div className="text-xs font-semibold text-[--color-on-surface-variant] mt-1 uppercase tracking-wider">SOURCE</div>
+                        <div className="text-[10px] font-bold text-[var(--color-primary-400)] mt-1 uppercase tracking-widest opacity-80">SOURCE</div>
                     </div>
-                    <ArrowRight className="h-6 w-6 text-[--color-on-surface-variant]/50" aria-hidden="true" />
+                    <ArrowRight className="h-5 w-5 text-[var(--color-primary-600)]" aria-hidden="true" />
                     <div className="text-center">
-                        <div className="font-mono text-3xl font-bold text-[var(--color-accent)] tracking-tight">
+                        <div className="font-mono text-3xl font-bold text-[var(--color-strategic)] tracking-tight drop-shadow-[0_0_10px_rgba(59,130,246,0.2)]">
                             {agent.route.destination}
                         </div>
-                        <div className="text-xs font-semibold text-[--color-on-surface-variant] mt-1 uppercase tracking-wider">OUTPUT</div>
+                        <div className="text-[10px] font-bold text-[var(--color-primary-400)] mt-1 uppercase tracking-widest opacity-80">OUTPUT</div>
                     </div>
                 </div>
             </div>
 
             {/* Activity Log */}
             <div className="flex-1 overflow-y-auto px-4 py-4">
-                <h3 className="text-xs font-semibold text-[--color-on-surface-variant] uppercase tracking-wider mb-3">
-                    Recent Activity
+                <h3 className="text-xs font-bold text-[var(--color-on-surface-variant)] uppercase tracking-wider mb-3 px-2">
+                    System Log
                 </h3>
 
                 {logsLoading ? (
